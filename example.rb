@@ -1,42 +1,49 @@
 # frozen_string_literal: true
 
 class FizzBuzz
-  @@count_fizz = 0
-  @@count_buzz = 0
+  class <<self
+    attr_accessor :count_buzz, :count_fizz
+  end
 
   def initialize(number)
     @n = number
   end
 
+  def treat_15_div
+    puts 'fizzBuzz'
+    FizzBuzz.count_buzz = (FizzBuzz.count_buzz || 0) + 1
+    FizzBuzz.count_fizz = (FizzBuzz.count_fizz || 0) + 1
+  end
+
+  def treat_5_div
+    puts 'buzz'
+    FizzBuzz.count_buzz = (FizzBuzz.count_buzz || 0) + 1
+  end
+
+  def treat_3_div
+    puts 'fizz'
+    FizzBuzz.count_fizz = (FizzBuzz.count_fizz || 0) + 1
+  end
+
+  # rubocop:disable Metrics/MethodLength
   def play
     (1..@n).each do |i|
       if (i % 15).zero?
-        puts 'fizzBuzz'
-        @@count_fizz += 1
-        @@count_buzz += 1
+        treat_15_div
       elsif (i % 3).zero?
-        puts 'fizz'
-        @@count_fizz += 1
+        treat_3_div
       elsif (i % 5).zero?
-        puts 'buzz'
-        @@count_buzz += 1
+        treat_5_div
       else
         puts i
       end
     end
   end
-
-  def self.fizz_count
-    puts @@count_fizz
-  end
-
-  def self.buzz_count
-    puts @@count_buzz
-  end
+  # rubocop:enable Metrics/MethodLength
 
   def self.reset_count
-    @@count_buzz = 0
-    @@count_fizz = 0
+    FizzBuzz.count_buzz = 0
+    FizzBuzz.count_fizz = 0
   end
 end
 
@@ -50,5 +57,5 @@ b.play
 puts ''
 # 15 9
 
-FizzBuzz.fizz_count
-FizzBuzz.buzz_count
+puts "FizzCount: #{FizzBuzz.count_fizz}"
+puts "BuzzCount: #{FizzBuzz.count_buzz}"
